@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="jsonload.js"></script>
+<script>
+function show(shown, hidden) {
+  document.getElementById(shown).style.display='block';
+  document.getElementById(hidden).style.display='none';
+  return false;
+}
+</script>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+
+div.gallery {
+    margin: 5px;
+    border: 1px solid #ccc;
+    float: left;
+    width: 330px;
+}
+
+div.gallery:hover {
+    border: 1px solid #777;
+}
+
+div.gallery img {
+    width: 200px	;
+    height: 200px;
+}
+
+div.desc {
+    padding: 15px;
+    text-align: center;
+}
+
+
+</style>
+
+</head>
+<body>
+<div  ng-app="app" 
+        ng-controller="mycontroller">
+
+	<div id="Page1">
+			<div  ng-repeat="(key, data) in items">
+			  <div class="gallery">
+			  		<img ng-src="{{get_image(key)}}" class="img-responsive " ng-click='navi(key)' onclick="return show('Page2','Page1');"/>
+			  		<div class="desc">
+			  			{{items[key]['name']}}
+			  		</div>
+			 </div> 
+		</div>
+	</div>
+
+
+	<div id="Page2" style="display:none" ng-app="app" ng-controller="detailcontroller">		
+		<a href="#" onclick="return show('Page1','Page2');"> < Back </a>        
+		<h1>Details</h1>
+		<div>{{listDetail()}}</div>
+		<div  ng-repeat="feature in features">
+			<tr>{{feature}}</tr>
+		</div>
+	</div>
+
+</div>
+
+</body>
+
+</html>
