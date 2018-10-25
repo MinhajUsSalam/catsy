@@ -8,6 +8,8 @@
         $scope.items = new Array
         $scope.counter = 0
         $scope.keys = new Array
+        $scope.sub_items = new Array
+        $scope.limit = 12
         
 
         var request = {
@@ -23,7 +25,20 @@
        }).then(function (response){
             $scope.items = response['data']
             $scope.keys = Object.keys($scope.items)
-            console.log($scope.keys[0])
+            var ind = 0
+                var temp = new Array
+                for (var k in $scope.keys) {
+                    console.log(ind)
+                    temp.push({id: $scope.keys[ind], value: $scope.items[$scope.keys[ind]] })
+                    ind++
+                    if (ind == $scope.limit){
+                        $scope.limit = $scope.limit + 12
+                        $scope.sub_items.push(temp)
+                        temp = []
+                    }
+
+                }
+            console.log($scope.sub_items)
        },function (error){
 
        });
@@ -34,9 +49,10 @@
 
         $scope.get_image = function(key) {
             try{
-                return $scope.items[key]['assets'][0]['thumbnail_url']
+                console.log(key)
+                return $scope.items[key['id']]['assets'][0]['thumbnail_url']
             } catch(e) {
-                console.log("Got an error!",e);
+                console.log("Got an error!");
             }
         }
 
@@ -47,7 +63,6 @@
 
         $scope.increment = function() {
             $scope.counter = $scope.counter + 1
-            console.log($scope.counter)
         }
 
         $scope.curr_counter = function() {
@@ -62,7 +77,7 @@
      var details = []   
 
       function saveDetail(items,key) {
-          details = items[key]
+          details = items[key['id']]
       };
 
       var loadDetail = function(){
