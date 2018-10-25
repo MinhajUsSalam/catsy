@@ -7,8 +7,24 @@
 function show(shown, hidden) {
   document.getElementById(shown).style.display='block';
   document.getElementById(hidden).style.display='none';
+  btns = document.getElementById('Page_btns')
+  if ( btns.style.display === 'none') {
+  		btns.style.display='block';
+  	} else {
+  		btns.style.display='none';
+  	}
   return false;
 }
+
+function next(shown) {
+	if (document.getElementById(shown).style.display === 'none') {
+  		document.getElementById(shown).style.display='block';
+  	} else {
+  		document.getElementById(shown).style.display='none';
+  	}
+  	return false;
+}
+
 </script>
 
 <style>
@@ -34,8 +50,8 @@ div.gallery img {
 }
 
 div.desc {
-    padding: 15px;
-    text-align: center;
+    padding: 5px;
+    text-align: top;
 }
 
 
@@ -45,8 +61,13 @@ div.desc {
 <body>
 <div  ng-app="app" 
         ng-controller="mycontroller">
+    
+    <div id = "Page_btns">     
+    	<a href="#" onclick="return next('Page1');"> < Prev </a>
+		<a href="#" onclick="return next('Page1');">  Next > </a>
+	</div>
 
-	<div id="Page1">
+	<div id= "Page1" > 
 			<div  ng-repeat="(key, data) in items">
 			  <div class="gallery">
 			  		<img ng-src="{{get_image(key)}}" class="img-responsive " ng-click='navi(key)' onclick="return show('Page2','Page1');"/>
