@@ -3,72 +3,7 @@
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <script src="jsonload.js"></script>
-<script>
 
-var details_prev = 0;
-var curr_show = 0
-
-function back() {
-	document.getElementById('Page' + details_prev).style.display ='block'
-	curr_show = details_prev
-	document.getElementById('Page_detail').style.display='none';
-	document.getElementById('Page_btns').style.display = 'block'
-}
-
-function go_to(pg) {
-	console.log(curr_show)
-	document.getElementById('Page' + curr_show).style.display='none';
-	document.getElementById('Page' + (pg-1)).style.display='block';
-	curr_show = pg-1
-}
-
-function details_page(hidden,shown) {
-	for (i = 0; i < 5; i++) {
-		if (document.getElementById('Page' + i).style.display ==='block') {
-			document.getElementById('Page' + i).style.display ='none'
-			details_prev = i
-			break;
-		}
-	}
-	document.getElementById('Page_detail').style.display='block';
-	document.getElementById('Page_btns').style.display = 'none'
-}
-
-function next(shown) {
-	
-	for (i = 0; i < shown-1; i++) {
-		if (document.getElementById('Page' + i).style.display ==='block') {
-			curr_show = i+1
-			document.getElementById('Page' + (i+1)).style.display='block'
-			document.getElementById('Page' + i).style.display='none'
-			break;
-		}
-	}
-  	return false;
-}
-
-function prev(shown) {
-
-	for (i = 1; i < shown; i++) {
-		if (document.getElementById('Page' + i).style.display ==='block') {
-			curr_show = i-1
-			document.getElementById('Page' + (i-1)).style.display='block'
-			document.getElementById('Page' + i).style.display='none'
-			break;
-		}
-	}
-  	return false;
-}
-
-function init() {
-	document.getElementById('Page0').style.display='block'
-	curr_show = 0
-	document.getElementById('Page_btns').style.display = 'block'
-	document.getElementById('Start_btns').style.display = 'none'
-	return false
-}
-
-</script>
 
 <style>
 * {
@@ -110,13 +45,14 @@ div.desc {
 	</div>
 
     <div id = "Page_btns" style="display:none" >     
-    	<a href="#" onclick="return prev(5);"> < Prev </a>
-		<a href="#"  onclick="return next(5);">  Next > </a>
+    	<a href="#" onclick="return prev(6);"> < Prev </a>
+		<a href="#"  onclick="return next(6);">  Next > </a>
 		<a href="#" onclick="return go_to(1);"> 1 </a>
 		<a href="#"  onclick="return go_to(2);"> 2 </a>
 		<a href="#" onclick="return go_to(3);"> 3 </a>
 		<a href="#"  onclick="return go_to(4);">  4 </a>
 		<a href="#"  onclick="return go_to(5);">  5 </a>
+		<a href="#"  onclick="return go_to(6);">  6 </a>
 	</div>	
 
 
@@ -125,7 +61,7 @@ div.desc {
 		<div ng-attr-id= "{{'Page' + $index}}" style="display:none"> 
 				<div  ng-repeat="a in list">
 					  <div class="gallery">
-					  		<img ng-src="{{get_image(a)}}" class="img-responsive " ng-click='navi(a)' onclick="return details_page();"/>
+					  		<img ng-src="{{get_image(a)}}" class="img-responsive " ng-click='navi(a)' onclick="details_page();"/>
 					  		<div class="desc">
 					  			{{items[a['id']]['name']}}
 					  		</div>
@@ -135,7 +71,7 @@ div.desc {
 	</div>
 
 
-	
+
 
 	<div id="Page_detail" style="display:none" ng-app="app" ng-controller="detailcontroller">		
 		<a href="#" onclick="return back();"> < Back </a>        
@@ -147,6 +83,79 @@ div.desc {
 	</div>
 
 </div>
+
+<script>
+
+var details_prev = 0;
+var curr_show = 0
+var max_pages = 0
+
+
+function back() {
+	document.getElementById('Page' + details_prev).style.display ='block'
+	curr_show = details_prev
+	document.getElementById('Page_detail').style.display='none';
+	document.getElementById('Page_btns').style.display = 'block'
+}
+
+function go_to(pg) {
+	console.log(curr_show)
+	document.getElementById('Page' + curr_show).style.display='none';
+	document.getElementById('Page' + (pg-1)).style.display='block';
+	curr_show = pg-1
+}
+
+function details_page(hidden,shown) {
+	for (i = 0; i < 6; i++) {
+		if (document.getElementById('Page' + i).style.display ==='block') {
+			document.getElementById('Page' + i).style.display ='none'
+			details_prev = i
+			break;
+		}
+	}
+	document.getElementById('Page_detail').style.display='block';
+	document.getElementById('Page_btns').style.display = 'none'
+}
+
+function next(shown) {
+	
+	for (i = 0; i < shown-1; i++) {
+		if (document.getElementById('Page' + i).style.display ==='block') {
+			curr_show = i+1
+			document.getElementById('Page' + (i+1)).style.display='block'
+			document.getElementById('Page' + i).style.display='none'
+			break;
+		}
+	}
+  	return false;
+}
+
+function prev(shown) {
+
+	for (i = 1; i < shown; i++) {
+		if (document.getElementById('Page' + i).style.display ==='block') {
+			curr_show = i-1
+			document.getElementById('Page' + (i-1)).style.display='block'
+			document.getElementById('Page' + i).style.display='none'
+			break;
+		}
+	}
+  	return false;
+}
+
+function init() {
+	// var dom_el = document.querySelector('[ng-controller="mycontroller"]');
+	// var ng_el_scope = angular.element(dom_el).scope();
+	// max_pages = ng_el_scope.total_pages;
+	// console.log(dom_el)
+	document.getElementById('Page0').style.display='block'
+	curr_show = 0
+	document.getElementById('Page_btns').style.display = 'block'
+	document.getElementById('Start_btns').style.display = 'none'
+	return false
+}
+
+</script>
 
 
 </body>

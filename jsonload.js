@@ -10,7 +10,7 @@
         $scope.keys = new Array
         $scope.sub_items = new Array
         $scope.limit = 12
-        
+        $scope.total_pages = 0
 
         var request = {
                 method: 'get',
@@ -38,7 +38,8 @@
                     }
 
                 }
-            console.log($scope.sub_items)
+             $scope.total_pages = $scope.sub_items.length   
+            console.log($scope.total_pages)
        },function (error){
 
        });
@@ -90,14 +91,18 @@
       };
     })
 
-      ap.controller('detailcontroller', ['$scope', 'detailService', '$anchorScroll', function($scope,detailService,$anchorScroll) {
-        
-        $scope.features = new Array
+  ap.config(['$compileProvider', function ($compileProvider) {
+        $compileProvider.debugInfoEnabled(false);
+    }]);  
 
-        $scope.listDetail = function(){
-            $scope.features = detailService.loadDetail()
-        }
+  ap.controller('detailcontroller', ['$scope', 'detailService', '$anchorScroll', function($scope,detailService,$anchorScroll) {
+    
+    $scope.features = new Array
 
-      }])
+    $scope.listDetail = function(){
+        $scope.features = detailService.loadDetail()
+    }
+
+  }])
 
     
