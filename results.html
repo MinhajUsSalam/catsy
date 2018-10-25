@@ -4,25 +4,56 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <script src="jsonload.js"></script>
 <script>
-function show(shown, hidden) {
-  document.getElementById(shown).style.display='block';
-  document.getElementById(hidden).style.display='none';
-  btns = document.getElementById('Page_btns')
-  if ( btns.style.display === 'none') {
-  		btns.style.display='block';
-  	} else {
-  		btns.style.display='none';
-  	}
-  return false;
+
+var details_prev = 0;
+
+function back() {
+	document.getElementById('Page' + details_prev).style.display ='block'
+	document.getElementById('Page_detail').style.display='none';
+	document.getElementById('Page_btns').style.display = 'block'
+}
+
+function details_page(hidden,shown) {
+	for (i = 0; i < 5; i++) {
+		if (document.getElementById('Page' + i).style.display ==='block') {
+			document.getElementById('Page' + i).style.display ='none'
+			details_prev = i
+			break;
+		}
+	}
+	document.getElementById('Page_detail').style.display='block';
+	document.getElementById('Page_btns').style.display = 'none'
 }
 
 function next(shown) {
-	if (document.getElementById(shown).style.display === 'none') {
-  		document.getElementById(shown).style.display='block';
-  	} else {
-  		document.getElementById(shown).style.display='none';
-  	}
+	
+	for (i = 0; i < shown; i++) {
+		if (document.getElementById('Page' + i).style.display ==='block') {
+			document.getElementById('Page' + (i+1)).style.display='block'
+			document.getElementById('Page' + i).style.display='none'
+			break;
+		}
+	}
   	return false;
+}
+
+function prev(shown) {
+
+	for (i = 0; i < shown; i++) {
+		if (document.getElementById('Page' + i).style.display ==='block') {
+			document.getElementById('Page' + (i-1)).style.display='block'
+			document.getElementById('Page' + i).style.display='none'
+			break;
+		}
+	}
+  	return false;
+}
+
+function init() {
+	document.getElementById('Page0').style.display='block'
+	document.getElementById('Page_btns').style.display = 'block'
+	document.getElementById('Start_btns').style.display = 'none'
+	return false
 }
 
 </script>
@@ -62,25 +93,35 @@ div.desc {
 <div  ng-app="app" 
         ng-controller="mycontroller">
     
-    <div id = "Page_btns">     
-    	<a href="#" onclick="return next('Page1');"> < Prev </a>
-		<a href="#" onclick="return next('Page1');">  Next > </a>
+    <div id = "Start_btns" style="display:block" >     
+    	<a href="#" onclick="return init();"> < Start > </a>
 	</div>
 
-	<div id= "Page1" > 
-			<div  ng-repeat="(key, data) in items">
-			  <div class="gallery">
-			  		<img ng-src="{{get_image(key)}}" class="img-responsive " ng-click='navi(key)' onclick="return show('Page2','Page1');"/>
-			  		<div class="desc">
-			  			{{items[key]['name']}}
-			  		</div>
-			 </div> 
+    <div id = "Page_btns" style="display:none" >     
+    	<a href="#" onclick="return prev(5);"> < Prev </a>
+		<a href="#"  onclick="return next(5);">  Next > </a>
+	</div>
+
+
+
+	<div ng-repeat="list in sub_items track by $index">
+		<div ng-attr-id= "{{'Page' + $index}}" style="display:none"> 
+				<div  ng-repeat="a in list">
+					  <div class="gallery">
+					  		<img ng-src="{{get_image(a)}}" class="img-responsive " ng-click='navi(a)' onclick="return details_page();"/>
+					  		<div class="desc">
+					  			{{items[a['id']]['name']}}
+					  		</div>
+					 </div> 
+				</div>
 		</div>
 	</div>
 
 
-	<div id="Page2" style="display:none" ng-app="app" ng-controller="detailcontroller">		
-		<a href="#" onclick="return show('Page1','Page2');"> < Back </a>        
+
+
+	<div id="Page_detail" style="display:none" ng-app="app" ng-controller="detailcontroller">		
+		<a href="#" onclick="return back();"> < Back </a>        
 		<h1>Details</h1>
 		<div>{{listDetail()}}</div>
 		<div  ng-repeat="feature in features">
@@ -89,6 +130,7 @@ div.desc {
 	</div>
 
 </div>
+
 
 </body>
 
