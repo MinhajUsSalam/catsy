@@ -6,11 +6,20 @@
 <script>
 
 var details_prev = 0;
+var curr_show = 0
 
 function back() {
 	document.getElementById('Page' + details_prev).style.display ='block'
+	curr_show = details_prev
 	document.getElementById('Page_detail').style.display='none';
 	document.getElementById('Page_btns').style.display = 'block'
+}
+
+function go_to(pg) {
+	console.log(curr_show)
+	document.getElementById('Page' + curr_show).style.display='none';
+	document.getElementById('Page' + (pg-1)).style.display='block';
+	curr_show = pg-1
 }
 
 function details_page(hidden,shown) {
@@ -27,8 +36,9 @@ function details_page(hidden,shown) {
 
 function next(shown) {
 	
-	for (i = 0; i < shown; i++) {
+	for (i = 0; i < shown-1; i++) {
 		if (document.getElementById('Page' + i).style.display ==='block') {
+			curr_show = i+1
 			document.getElementById('Page' + (i+1)).style.display='block'
 			document.getElementById('Page' + i).style.display='none'
 			break;
@@ -39,8 +49,9 @@ function next(shown) {
 
 function prev(shown) {
 
-	for (i = 0; i < shown; i++) {
+	for (i = 1; i < shown; i++) {
 		if (document.getElementById('Page' + i).style.display ==='block') {
+			curr_show = i-1
 			document.getElementById('Page' + (i-1)).style.display='block'
 			document.getElementById('Page' + i).style.display='none'
 			break;
@@ -51,6 +62,7 @@ function prev(shown) {
 
 function init() {
 	document.getElementById('Page0').style.display='block'
+	curr_show = 0
 	document.getElementById('Page_btns').style.display = 'block'
 	document.getElementById('Start_btns').style.display = 'none'
 	return false
@@ -100,7 +112,12 @@ div.desc {
     <div id = "Page_btns" style="display:none" >     
     	<a href="#" onclick="return prev(5);"> < Prev </a>
 		<a href="#"  onclick="return next(5);">  Next > </a>
-	</div>
+		<a href="#" onclick="return go_to(1);"> 1 </a>
+		<a href="#"  onclick="return go_to(2);"> 2 </a>
+		<a href="#" onclick="return go_to(3);"> 3 </a>
+		<a href="#"  onclick="return go_to(4);">  4 </a>
+		<a href="#"  onclick="return go_to(5);">  5 </a>
+	</div>	
 
 
 
@@ -118,7 +135,7 @@ div.desc {
 	</div>
 
 
-
+	
 
 	<div id="Page_detail" style="display:none" ng-app="app" ng-controller="detailcontroller">		
 		<a href="#" onclick="return back();"> < Back </a>        
