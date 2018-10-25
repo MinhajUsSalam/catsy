@@ -7,6 +7,7 @@
 
         $scope.items = new Array
         $scope.counter = 0
+        $scope.keys = new Array
         
 
         var request = {
@@ -21,6 +22,8 @@
           url: 'Items.json'
        }).then(function (response){
             $scope.items = response['data']
+            $scope.keys = Object.keys($scope.items)
+            console.log($scope.keys[0])
        },function (error){
 
        });
@@ -30,12 +33,25 @@
         };
 
         $scope.get_image = function(key) {
-            return $scope.items[key]['assets'][0]['thumbnail_url']
+            try{
+                return $scope.items[key]['assets'][0]['thumbnail_url']
+            } catch(e) {
+                console.log("Got an error!",e);
+            }
         }
 
         $scope.navi = function(key) {
            detailService.saveDetail($scope.items,key) 
 
+        }
+
+        $scope.increment = function() {
+            $scope.counter = $scope.counter + 1
+            console.log($scope.counter)
+        }
+
+        $scope.curr_counter = function() {
+            return $scope.counter
         }
         
 
@@ -66,8 +82,6 @@
         $scope.listDetail = function(){
             $scope.features = detailService.loadDetail()
         }
-
-        $anchorScroll()
 
       }])
 
